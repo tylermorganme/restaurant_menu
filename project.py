@@ -22,13 +22,11 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 @app.route('/')
+@app.route('/restaurants/')
 def defaultRestaurantMenu():
-	restaurant = session.query(Restaurant).first()
-	items = session.query(MenuItem).filter_by(
-		restaurant_id=restaurant.id)
-	return render_template('menu.html', restaurant=restaurant, items=items)
+	return "Restaurants"
 
-@app.route('/restaurants/<int:restaurant_id>/')
+@app.route('/restaurant/<int:restaurant_id>/')
 def restaurantMenu(restaurant_id):
 	restaurant = session.query(Restaurant).filter_by(
 		id=restaurant_id).one()
@@ -36,7 +34,19 @@ def restaurantMenu(restaurant_id):
 		restaurant_id=restaurant.id)
 	return render_template('menu.html', restaurant=restaurant, items=items)
 
-@app.route('/restaurants/<int:restaurant_id>/new/', methods=['GET', 'POST'])
+@app.route('/restaurant/new/', methods=['GET', 'POST'])
+def newRestaurant():
+	return "New Restaurant"
+
+@app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
+def editRestaurant(restaurant_id):
+	return "Edit Restaurant"
+
+@app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
+def deleteRestaurant(restaurant_id):
+	return "Delete Restaurant"
+
+@app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):
 	if request.method == 'POST':
 		newItem = MenuItem(name = request.form['name'], restaurant_id = restaurant_id)
@@ -47,7 +57,7 @@ def newMenuItem(restaurant_id):
 	else:
 		return redirect(url_for('newmenuitem.html', restaurant_id = restaurant_id))
 
-@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/', methods = ['GET', 'POST'])
+@app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/', methods = ['GET', 'POST'])
 def editMenuItem(restaurant_id, menu_id):
 	editedItem = session.query(MenuItem).filter_by(id = menu_id).one()
 	previousName = editedItem.name
@@ -60,7 +70,7 @@ def editMenuItem(restaurant_id, menu_id):
 	else:
 		return render_template('editmenuitem.html', restaurant_id = restaurant_id, menu_id = menu_id, item = editedItem)
 
-@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete/', methods = ['GET', 'POST'])
+@app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/delete/', methods = ['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_id):
 	deleteItem = session.query(MenuItem).filter_by(id = menu_id).one()
 	deletedItemName = deleteItem.name
@@ -73,13 +83,13 @@ def deleteMenuItem(restaurant_id, menu_id):
 		return render_template('deletemenuitem.html', restaurant_id = restaurant_id, menu_id = menu_id, item = deleteItem)
 
 #Making an API Endpoint (GET Request)
-@app.route('/restaurants/<int:restaurant_id>/menu/JSON')
+@app.route('/restaurant/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
 	restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
 	items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
 	return jsonify(MenuItems=[i.serialize for i in items])
 
-@app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+@app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
 def menuItemJSON(restaurant_id, menu_id):
 	restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
 	item = session.query(MenuItem).filter_by(id=menu_id).one()
