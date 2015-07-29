@@ -4,6 +4,9 @@
 	</head>
 	<body>
 		<h1>Restaurants</h1>
+    <a href="{{ url_for('newRestaurant') }}">New Restaurant</a>
+    </br>
+    </br>
 
 		{% for restaurant in restaurants %}
 		{{restaurant.name}}
