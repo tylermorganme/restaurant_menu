@@ -24,7 +24,9 @@ session = DBSession()
 @app.route('/')
 @app.route('/restaurants/')
 def defaultRestaurantMenu():
-	return "Restaurants"
+	#  TODO: Add a alphatbetical sort
+	restaurants = session.query(Restaurant)
+	return render_template('restaurants.html', restaurants=restaurants)
 
 @app.route('/restaurant/<int:restaurant_id>/')
 def restaurantMenu(restaurant_id):
