@@ -23,7 +23,7 @@ session = DBSession()
 
 @app.route('/')
 @app.route('/restaurants/')
-def defaultRestaurantMenu():
+def restaurants():
 	#  TODO: Add a alphatbetical sort
 	restaurants = session.query(Restaurant)
 	return render_template('restaurants.html', restaurants=restaurants)
@@ -38,15 +38,30 @@ def restaurantMenu(restaurant_id):
 
 @app.route('/restaurant/new/', methods=['GET', 'POST'])
 def newRestaurant():
-	return "New Restaurant"
+	if request.method == 'POST':
+		return "New Restaurant POST"
+	else:
+		return "New Restaurant GET"
 
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
-	return "Edit Restaurant"
+	if request.method == 'POST':
+		return "Edit Restaurant POST"
+	else:
+		return "Edit Restaurant GET"
 
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
-	return "Delete Restaurant"
+	itemToDelete = session.query(Restaurant).filter_by(id = restaurant_id).one()
+	if request.method == 'POST':
+		menuItems = session.query(MenuItem).filter_by(restaurant_id = itemToDelete.id)
+		for item in menuItems:
+			session.delete(item)
+		session.delete(itemToDelete)
+		session.commit()
+		return redirect(url_for('restaurants'))
+	else:
+		return render_template('deleterestaurant.html', restaurant=itemToDelete)
 
 @app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):

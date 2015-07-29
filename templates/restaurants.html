@@ -7,8 +7,8 @@
 
 		{% for restaurant in restaurants %}
 		{{restaurant.name}}
-		<a href="#">Edit</a>
-		<a href="#">Delete</a>
+		<a href="{{ url_for('editRestaurant', restaurant_id=restaurant.id)}}">Edit</a>
+		<a href="{{ url_for('deleteRestaurant', restaurant_id=restaurant.id)}}">Delete</a>
 		</br>
 		</br>
 		{% endfor %}
