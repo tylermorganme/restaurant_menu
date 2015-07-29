@@ -48,10 +48,14 @@ def newRestaurant():
 
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
+	restaurantToEdit = session.query(Restaurant).filter_by(id=restaurant_id).one()
 	if request.method == 'POST':
-		return "Edit Restaurant POST"
+		restaurantToEdit.name = request.form['name']
+		session.add(restaurantToEdit)
+		session.commit()
+		return redirect(url_for('restaurants'))
 	else:
-		return "Edit Restaurant GET"
+		return render_template('editrestaurant.html', restaurant=restaurantToEdit)
 
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
@@ -78,6 +82,7 @@ def newMenuItem(restaurant_id):
 		return redirect(url_for('newmenuitem.html', restaurant_id = restaurant_id))
 
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/', methods = ['GET', 'POST'])
+#  TODO: Add edit inputs for the other fields in MenuItem
 def editMenuItem(restaurant_id, menu_id):
 	editedItem = session.query(MenuItem).filter_by(id = menu_id).one()
 	previousName = editedItem.name
