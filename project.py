@@ -28,12 +28,24 @@ def restaurants():
 	return render_template('restaurants.html', restaurants=restaurants)
 
 @app.route('/restaurant/<int:restaurant_id>/')
+#  TODO: Breakout by course
 def restaurantMenu(restaurant_id):
 	restaurant = session.query(Restaurant).filter_by(
 		id=restaurant_id).one()
-	items = session.query(MenuItem).filter_by(
-		restaurant_id=restaurant.id)
-	return render_template('menu.html', restaurant=restaurant, items=items)
+	apps = session.query(MenuItem).filter_by(
+		restaurant_id=restaurant.id, course="Appetizer")
+	entrees = session.query(MenuItem).filter_by(
+		restaurant_id=restaurant.id, course="Entree")
+	desserts = session.query(MenuItem).filter_by(
+		restaurant_id=restaurant.id, course="Dessert")
+	beverages = session.query(MenuItem).filter_by(
+		restaurant_id=restaurant.id, course="Beverages")
+	return render_template('menu.html',
+	 restaurant=restaurant,
+	 apps=apps,
+	 entrees=entrees,
+	 desserts=desserts,
+	 beverages=beverages)
 
 @app.route('/restaurant/new/', methods=['GET', 'POST'])
 def newRestaurant():
