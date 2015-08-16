@@ -114,6 +114,9 @@ def editRestaurant(restaurant_id):
 	if 'username' not in login_session:
 		return redirect('/login')
 	restaurantToEdit = session.query(Restaurant).filter_by(id=restaurant_id).one()
+	if restaurantToEdit.user_id != login_session['user_id']:
+		return ('You are not authorized to edit this restaurant. '
+			    'Please create your own restaurant in order to edit.')
 	if request.method == 'POST':
 		restaurantToEdit.name = request.form['name']
 		session.add(restaurantToEdit)
@@ -126,16 +129,19 @@ def editRestaurant(restaurant_id):
 def deleteRestaurant(restaurant_id):
 	if 'username' not in login_session:
 		return redirect('/login')
-	itemToDelete = session.query(Restaurant).filter_by(id = restaurant_id).one()
+	restaurantToDelete = session.query(Restaurant).filter_by(id = restaurant_id).one()
+	if restaurantToDelete.user_id != login_session['user_id']:
+		return ('You are not authorized to delete this restaurant. '
+			    'Please create your own restaurant in order to delete.')
 	if request.method == 'POST':
-		menuItems = session.query(MenuItem).filter_by(restaurant_id = itemToDelete.id)
+		menuItems = session.query(MenuItem).filter_by(restaurant_id = restaurantToDelete.id)
 		for item in menuItems:
 			session.delete(item)
-		session.delete(itemToDelete)
+		session.delete(restaurantToDelete)
 		session.commit()
 		return redirect(url_for('restaurants'))
 	else:
-		return render_template('deleterestaurant.html', restaurant=itemToDelete)
+		return render_template('deleterestaurant.html', restaurant=restaurantToDelete)
 
 @app.route('/restaurant/<int:restaurant_id>/menu/new/', methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):
@@ -143,6 +149,9 @@ def newMenuItem(restaurant_id):
 		id=restaurant_id).one()
 	if 'username' not in login_session:
 		return redirect('/login')
+	if restaurant.user_id != login_session['user_id']:
+		return ('Your are not authorized to add menu items to this restaurant. '
+			    'Please create your own restaurant in order to add menu items.')
 	if request.method == 'POST':
 		newItem = MenuItem(name = request.form['name']
 		, course = request.form['course']
@@ -164,6 +173,9 @@ def editMenuItem(restaurant_id, menu_id):
 		return redirect('/login')
 	editedItem = session.query(MenuItem).filter_by(id = menu_id).one()
 	previousName = editedItem.name
+	if editedItem.user_id != login_session['user_id']:
+		return ('Your are not authorized to edit this restaurant\'s menu items. '
+			    'Please create your own restaurant in order to edit.')
 	if request.method == 'POST':
 		editedItem.name = request.form['name']
 		session.add(editedItem)
@@ -179,6 +191,9 @@ def deleteMenuItem(restaurant_id, menu_id):
 		return redirect('/login')
 	deleteItem = session.query(MenuItem).filter_by(id = menu_id).one()
 	deletedItemName = deleteItem.name
+	if deleteItem.user_id != login_session['user_id']:
+		return ('Your are not authorized to delete this restaurant\'s menu items. '
+			    'Please create your own restaurant in order to delete.')
 	if request.method =='POST':
 		session.delete(deleteItem)
 		session.commit()
