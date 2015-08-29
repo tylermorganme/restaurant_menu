@@ -274,6 +274,7 @@ def gconnect():
 	data = answer.json()
 	print data
 
+	login_session['provider'] = 'google'
 	login_session['username'] = data['name']
 	login_session['picture'] = data['picture']
 	login_session['email'] = data['email']
@@ -292,40 +293,6 @@ def gconnect():
 	flash("you are now logged in as %s" % login_session['username'])
 	print "done!"
 	return output
-
-# DISCONNECT - Revoke a current user's token and reset their login-session.
-@app.route('/gdisconnect')
-def gdisconnect():
-	# Only disconnect a connected user.
-	credentials = login_session.get('credentials')
-	if credentials is None:
-		response = make_response(json.dumps('Current user not connected'), 401)
-		response.headers['Content-type'] = 'application/json'
-		return response
-	#Execute HTTP GET request to revoke current token.
-	access_token = credentials.access_token
-	url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
-	h = httplib2.Http()
-	result = h.request(url, 'GET')[0]
-
-	if result['status'] == '200':
-		# Result the user's session.
-		del login_session['credentials']
-		del login_session['gplus_id']
-		del login_session['username']
-		del login_session['email']
-		del login_session['picture']
-
-		response = make_response(json.dumps('Sucessfully disconencted.'), 200)
-		response.headers['Content-Type']= 'application/json'
-		return response
-	else:
-		# For whatever reason, the given token was invalid.
-		response = make_response(
-			json.dumps('Failed to revoew token for tgiven use.', 400 )
-		)
-		response.headers['Content-Type'] = 'application/json'
-		return response
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -392,15 +359,46 @@ def fbconnect():
     flash("Now logged in as %s" % login_session['username'])
     return output
 
-@app.route('/fbdisconnect')
-def fbdisconnect():
-    facebook_id = login_session['facebook_id']
-    # The access token must me included to successfully logout
-    access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
-    h = httplib2.Http()
-    result = h.request(url, 'DELETE')[1]
-    return "you have been logged out"
+@app.route('/disconnect')
+def disconnect():
+	if login_session['provider'] == 'facebook':
+	    facebook_id = login_session['facebook_id']
+	    # The access token must me included to successfully logout
+	    access_token = login_session['access_token']
+	    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+	    h = httplib2.Http()
+	    result = h.request(url, 'DELETE')[1]
+	    response = "You have been logged out"
+	else:
+		# Only disconnect a connected user.
+		credentials = login_session.get('credentials')
+		if credentials is None:
+			response = make_response(json.dumps('Current user not connected'), 401)
+			response.headers['Content-type'] = 'application/json'
+			return response
+		#Execute HTTP GET request to revoke current token.
+		access_token = credentials.access_token
+		url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+		h = httplib2.Http()
+		result = h.request(url, 'GET')[0]
+
+		if result['status'] == '200':
+			# Result the user's session.
+			del login_session['credentials']
+			del login_session['gplus_id']
+			del login_session['username']
+			del login_session['email']
+			del login_session['picture']
+
+			response = make_response(json.dumps('Sucessfully disconencted.'), 200)
+			response.headers['Content-Type']= 'application/json'
+		else:
+			# For whatever reason, the given token was invalid.
+			response = make_response(
+				json.dumps('Failed to revoew token for tgiven use.', 400 )
+			)
+			response.headers['Content-Type'] = 'application/json'
+	return response
 
 # API Endpoints
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')
