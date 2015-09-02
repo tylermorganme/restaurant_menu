@@ -1,8 +1,5 @@
-<html>
-	<head>
-		<link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-	</head>
-	<body>
+{% extends "base.html" %}
+{% block content %}
 		<h1>{{ restaurant.name}}</h1>
 		<a href="{{ url_for('restaurants')}}">Return to Restaurant List</a>
 		</br>
@@ -67,5 +64,4 @@
 			</br>
 			</br>
 		{% endfor %}
-	</body>
-</html>
+{% endblock %}

@@ -1,11 +1,5 @@
-<html>
-  <head>
-    <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script src="//apis.google.com/js/platform.js?onload=start"> </script>
-    <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
-  </head>
-  <body>
+{% extends "base.html" %}
+{% block content %}
     <div id="signinButton">
       <span class="g-signin"
         data-scope = "openid email"
@@ -101,5 +95,4 @@
     <a href='javascript:sendTokenToServer()'>Login with Facebook</a>
 
     </fb:login-button>
-  </body>
-</html>
+{% endblock %}
