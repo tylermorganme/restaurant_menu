@@ -54,15 +54,20 @@ def getUserID(email):
 	except:
 		return None
 
+@app.context_processor
+def utilities():
+	def user_logged_in():
+		return True if 'username' in login_session else False
+	return dict(user_logged_in=user_logged_in)
 
 @app.route('/')
 @app.route('/restaurants/')
 def restaurants():
 	restaurants = session.query(Restaurant).order_by(Restaurant.name.asc())
-	user = login_session['user_id']
 	if 'username' not in login_session:
 		return render_template('publicrestaurants.html', restaurants=restaurants)
 	else:
+		user = login_session['user_id']
 		return render_template('restaurants.html', restaurants=restaurants, user_id = user)
 
 @app.route('/restaurant/<int:restaurant_id>/')
@@ -361,21 +366,23 @@ def fbconnect():
 
 @app.route('/disconnect')
 def disconnect():
-	if login_session['provider'] == 'facebook':
-	    facebook_id = login_session['facebook_id']
-	    # The access token must me included to successfully logout
-	    access_token = login_session['access_token']
-	    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
-	    h = httplib2.Http()
-	    result = h.request(url, 'DELETE')[1]
-	    response = "You have been logged out"
+	if 'provider' not in login_session:
+		response = "You have been logged out"
+		flash("No user was logged in")
+	elif login_session['provider'] == 'facebook':
+		facebook_id = login_session['facebook_id']
+		# The access token must me included to successfully logout
+		access_token = login_session['access_token']
+		url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+		h = httplib2.Http()
+		result = h.request(url, 'DELETE')[1]
+		flash("You have been logged out")
 	else:
 		# Only disconnect a connected user.
 		credentials = login_session.get('credentials')
 		if credentials is None:
 			response = make_response(json.dumps('Current user not connected'), 401)
 			response.headers['Content-type'] = 'application/json'
-			return response
 		#Execute HTTP GET request to revoke current token.
 		access_token = credentials.access_token
 		url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
@@ -392,13 +399,15 @@ def disconnect():
 
 			response = make_response(json.dumps('Sucessfully disconencted.'), 200)
 			response.headers['Content-Type']= 'application/json'
+			flash("You have been logged out")
 		else:
 			# For whatever reason, the given token was invalid.
+			flash('Failed to revoke token for given use.')
 			response = make_response(
-				json.dumps('Failed to revoew token for tgiven use.', 400 )
+				json.dumps('Failed to revoke token for given use.', 400 )
 			)
 			response.headers['Content-Type'] = 'application/json'
-	return response
+	return redirect(url_for('restaurants'))
 
 # API Endpoints
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')

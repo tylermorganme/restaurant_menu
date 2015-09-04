@@ -1,9 +1,29 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-  </head>
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		{% block scripts %}{% endblock %}
+	</head>
 	<body>
 		<div><a href="{{ url_for('restaurants') }}">Home</a></div>
+		{% block login %}
+		{% if user_logged_in() %}
+		<div><a href="{{ url_for('disconnect') }}">Logout</a></div>
+		{% else %}
+		<div><a href="{{ url_for('showLogin') }}">Login</a></div>
+		{% endif %}
+		{% endblock %}
+		{% with messages = get_flashed_messages() %}
+			{% if messages%}
+				<ul>
+					{% for message in messages %}
+						<li>
+							<strong> {{ message }}</strong>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
     {% block content %}{% endblock %}
 
 	</body>
