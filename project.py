@@ -17,7 +17,8 @@ from database_setup import Restaurant, Base, MenuItem, User
 
 app = Flask(__name__)
 
-CLIENT_ID = json.loads(open('client_secrets.json', 'r').read())['web']['client_id']
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Menu Application"
 
 engine = create_engine('sqlite:///restaurantmenuwithusers.db')
@@ -94,7 +95,8 @@ def restaurantMenu(restaurant_id):
         restaurant_id=restaurant.id, course="Dessert")
     beverages = session.query(MenuItem).filter_by(
         restaurant_id=restaurant.id, course="Beverages")
-    if 'username' not in login_session or creator.id != login_session['user_id']:
+    if ('username' not in login_session or
+            creator.id != login_session['user_id']):
         return render_template('publicmenu.html',
                                restaurant=restaurant,
                                apps=apps,
@@ -155,7 +157,8 @@ def deleteRestaurant(restaurant_id):
         return ('You are not authorized to delete this restaurant. '
                 'Please create your own restaurant in order to delete.')
     if request.method == 'POST':
-        menuItems = session.query(MenuItem).filter_by(restaurant_id=restaurantToDelete.id)
+        menuItems = session.query(MenuItem).filter_by(
+            restaurant_id=restaurantToDelete.id)
         for item in menuItems:
             session.delete(item)
         session.delete(restaurantToDelete)
@@ -300,7 +303,8 @@ def gconnect():
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'), 200)
+        response = make_response(json.dumps(
+            'Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -347,11 +351,14 @@ def fbconnect():
     access_token = request.data
     print "access token received %s " % access_token
 
-    app_id = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_id']
-    app_secret = json.loads(open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+    app_id = json.loads(
+        open('fb_client_secrets.json', 'r').read())['web']['app_id']
+    app_secret = json.loads(
+        open('fb_client_secrets.json', 'r').read())['web']['app_secret']
     url = ('https://graph.facebook.com/oauth/access_token?'
            'grant_type=fb_exchange_token&client_id=%s&'
-           'client_secret=%s&fb_exchange_token=%s') % (app_id, app_secret, access_token)
+           'client_secret=%s&fb_exchange_token=%s') % (
+            app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -377,7 +384,8 @@ def fbconnect():
     login_session['access_token'] = stored_token
 
     # Get user picture
-    url = 'https://graph.facebook.com/v2.2/me/picture?%s&redirect=0&height=200&width=200' % token
+    url = ('https://graph.facebook.com/v2.2/me/picture?'
+           '%s&redirect=0&height=200&width=200') % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -410,7 +418,8 @@ def disconnect():
         facebook_id = login_session['facebook_id']
         # The access token must me included to successfully logout
         access_token = login_session['access_token']
-        url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
+        url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (
+            facebook_id, access_token)
         h = httplib2.Http()
         result = h.request(url, 'DELETE')[1]
         flash("You have been logged out")
@@ -419,11 +428,13 @@ def disconnect():
         # Only disconnect a connected user.
         credentials = login_session.get('credentials')
         if credentials is None:
-            response = make_response(json.dumps('Current user not connected'), 401)
+            response = make_response(
+                json.dumps('Current user not connected'), 401)
             response.headers['Content-type'] = 'application/json'
         # Execute HTTP GET request to revoke current token.
         access_token = credentials.access_token
-        url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % (access_token)
+        url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % (
+            access_token)
         h = httplib2.Http()
         result = h.request(url, 'GET')[0]
 
@@ -432,7 +443,8 @@ def disconnect():
             del login_session['gplus_id']
             del login_session['credentials']
 
-            response = make_response(json.dumps('Sucessfully disconencted.'), 200)
+            response = make_response(
+                json.dumps('Sucessfully disconencted.'), 200)
             response.headers['Content-Type'] = 'application/json'
             flash("You have been logged out")
         else:
