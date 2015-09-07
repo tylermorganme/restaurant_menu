@@ -406,10 +406,7 @@ def fbconnect():
 
 @app.route('/disconnect')
 def disconnect():
-    if 'provider' not in login_session:
-        response = "You have been logged out"
-        flash("No user was logged in")
-    elif login_session['provider'] == 'facebook':
+    if login_session['provider'] == 'facebook':
         facebook_id = login_session['facebook_id']
         # The access token must me included to successfully logout
         access_token = login_session['access_token']
@@ -417,6 +414,7 @@ def disconnect():
         h = httplib2.Http()
         result = h.request(url, 'DELETE')[1]
         flash("You have been logged out")
+        del login_session['facebook_id']
     else:
         # Only disconnect a connected user.
         credentials = login_session.get('credentials')
@@ -431,11 +429,8 @@ def disconnect():
 
         if result['status'] == '200':
             # Result the user's session.
-            del login_session['credentials']
             del login_session['gplus_id']
-            del login_session['username']
-            del login_session['email']
-            del login_session['picture']
+            del login_session['credentials']
 
             response = make_response(json.dumps('Sucessfully disconencted.'), 200)
             response.headers['Content-Type'] = 'application/json'
@@ -447,6 +442,10 @@ def disconnect():
                 json.dumps('Failed to revoke token for given use.', 400)
             )
             response.headers['Content-Type'] = 'application/json'
+
+    del login_session['username']
+    del login_session['email']
+    del login_session['picture']
     return redirect(url_for('restaurants'))
 
 
