@@ -6,18 +6,6 @@
 		</br>
 		</br>
 
-		{% with messages = get_flashed_messages() %}
-			{% if messages %}
-				<ul>
-					{% for message in messages %}
-						<li>
-							<strong> {{ message }}</strong>
-						</li>
-					{% endfor %}
-				</ul>
-			{% endif %}
-		{% endwith %}
-
 		<!--  APPS -->
 		<h2>Apps</h2>
 		{% for i in apps %}
@@ -101,5 +89,5 @@
 		</br>
 		</br>
 		{% endfor %}
-		
+
 {% endblock %}
