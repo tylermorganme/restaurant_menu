@@ -1,19 +1,27 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css')}}">
+		<link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		{% block scripts %}{% endblock %}
 	</head>
-	<body>
-		<div><a href="{{ url_for('restaurants') }}">Home</a></div>
-		{% block login %}
-		{% if user_logged_in() %}
-		<div><a href="{{ url_for('disconnect') }}">Logout</a></div>
-		{% else %}
-		<div><a href="{{ url_for('showLogin') }}">Login</a></div>
-		{% endif %}
-		{% endblock %}
+	<body class='container-fluid'>
+		<nav class="navbar navbar-dark bg-inverse">
+			<a href="{{ url_for('restaurants') }}" class="navbar-brand pull-left">Home</a>
+			<ul class="nav navbar-nav pull-right">
+				{% block login %}
+				<li class="nav-item active">
+					{% if user_logged_in() %}
+					<a href="{{ url_for('disconnect') }}" class="nav-link">Logout</a>
+					{% else %}
+					<a href="{{ url_for('showLogin') }}" class="nav-link">Login</a>
+					{% endif %}
+				</li>
+				{% endblock %}
+			</ul>
+		</nav>
 		{% with messages = get_flashed_messages() %}
 			{% if messages%}
 				<ul>
@@ -26,6 +34,5 @@
 			{% endif %}
 		{% endwith %}
     {% block content %}{% endblock %}
-
 	</body>
 </html>
