@@ -38,6 +38,7 @@ session = DBSession()
 
 
 def createUser(login_session):
+    """Create a new user"""
     newUser = User(name=login_session['username'],
                    email=login_session['email'],
                    picture=login_session['picture'])
@@ -48,11 +49,13 @@ def createUser(login_session):
 
 
 def getUserInfo(user_id):
+    """Get the inforation for a user. Take a user ID as an argument."""
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
 
 def getUserID(email):
+    """Get the ID for a user. Takes an email address as an arugment."""
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
@@ -62,7 +65,9 @@ def getUserID(email):
 
 @app.context_processor
 def utilities():
+    """Provide utility context processors."""
     def user_logged_in():
+        """Return if a user is logged in."""
         return True if 'username' in login_session else False
     return dict(user_logged_in=user_logged_in)
 
@@ -70,6 +75,7 @@ def utilities():
 @app.route('/')
 @app.route('/restaurants/')
 def restaurants():
+    """Render a view of all restaurants"""
     restaurants = session.query(Restaurant).order_by(Restaurant.name.asc())
     if 'username' not in login_session:
         return render_template('publicrestaurants.html',
@@ -84,6 +90,7 @@ def restaurants():
 @app.route('/restaurant/<int:restaurant_id>/')
 #  TODO: Breakout by course
 def restaurantMenu(restaurant_id):
+    """Render a view of the menu of a single restaurant"""
     restaurant = session.query(Restaurant).filter_by(
         id=restaurant_id).one()
     creator = getUserInfo(restaurant.user_id)
@@ -116,6 +123,7 @@ def restaurantMenu(restaurant_id):
 
 @app.route('/restaurant/new/', methods=['GET', 'POST'])
 def newRestaurant():
+    """Render a view for creating new restaurants"""
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
@@ -130,6 +138,7 @@ def newRestaurant():
 
 @app.route('/restaurant/<int:restaurant_id>/edit/', methods=['GET', 'POST'])
 def editRestaurant(restaurant_id):
+    """Render a view for editing an existing restaurant"""
     if 'username' not in login_session:
         return redirect('/login')
     restaurantToEdit = session.query(Restaurant).filter_by(
@@ -149,6 +158,7 @@ def editRestaurant(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/delete/', methods=['GET', 'POST'])
 def deleteRestaurant(restaurant_id):
+    """Render a view for deleting an existing restaurant"""
     if 'username' not in login_session:
         return redirect('/login')
     restaurantToDelete = session.query(Restaurant).filter_by(
@@ -172,6 +182,7 @@ def deleteRestaurant(restaurant_id):
 @app.route('/restaurant/<int:restaurant_id>/menu/new/',
            methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):
+    """Render a view for creating a new menu item"""
     restaurant = session.query(Restaurant).filter_by(
         id=restaurant_id).one()
     if 'username' not in login_session:
@@ -198,6 +209,7 @@ def newMenuItem(restaurant_id):
            methods=['GET', 'POST'])
 #  TODO: Add edit inputs for the other fields in MenuItem
 def editMenuItem(restaurant_id, menu_id):
+    """Render a view of for editing an existing menu item"""
     if 'username' not in login_session:
         return redirect('/login')
     editedItem = session.query(MenuItem).filter_by(id=menu_id).one()
@@ -221,6 +233,7 @@ def editMenuItem(restaurant_id, menu_id):
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/delete/',
            methods=['GET', 'POST'])
 def deleteMenuItem(restaurant_id, menu_id):
+    """Render a view to delete an existing menu item"""
     if 'username' not in login_session:
         return redirect('/login')
     deleteItem = session.query(MenuItem).filter_by(id=menu_id).one()
@@ -244,6 +257,7 @@ def deleteMenuItem(restaurant_id, menu_id):
 # Store it in the session for later validation
 @app.route('/login')
 def showLogin():
+    """Render a view for user login"""
     state = ''.join(
         random.choice(string.ascii_uppercase + string.digits)
         for x in xrange(32))
@@ -254,6 +268,7 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """Authorize a user through Google OAuth2"""
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -344,6 +359,7 @@ def gconnect():
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
+    """Authorize a user through Facebook OAuth2"""
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -414,6 +430,7 @@ def fbconnect():
 
 @app.route('/disconnect')
 def disconnect():
+    """Disconnect a user from either Facebook or Google"""
     if login_session['provider'] == 'facebook':
         facebook_id = login_session['facebook_id']
         # The access token must me included to successfully logout
@@ -464,6 +481,7 @@ def disconnect():
 # API Endpoints
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
+    """API endpoint for a restaurant menu"""
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
     return jsonify(MenuItems=[i.serialize for i in items])
@@ -471,6 +489,7 @@ def restaurantMenuJSON(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/menu/<int:menu_id>/JSON')
 def menuItemJSON(restaurant_id, menu_id):
+    """API endpoint for a restaurant menu item"""
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     item = session.query(MenuItem).filter_by(id=menu_id).one()
     return jsonify(MenuItems=item.serialize)

@@ -12,48 +12,32 @@
 		<!--  APPS -->
 		<h2>Apps</h2>
 		{% for i in apps %}
-			{{i.name}}
-			</br>
-			{{i.description}}
-			</br>
-			{{i.price}}
-			</br>
-			</br>
+			{% if i.name|length > 1 %}<b>{{i.name}}</b></br>{% endif %}
+			{% if i.description|length > 1 %}{{i.description}}</br>{% endif %}
+			{% if i.price|length > 1 %}{{i.price}}</br>{% endif %}
 		{% endfor %}
 
 		<!--  ENTREES -->
 		<h2>Entrees</h2>
-			{% for i in entrees %}
-			{{i.name}}
-			</br>
-			{{i.description}}
-			</br>
-			{{i.price}}
-			</br>
-			</br>
+		{% for i in entrees %}
+			{% if i.name|length > 1 %}<b>{{i.name}}</b></br>{% endif %}
+			{% if i.description|length > 1 %}{{i.description}}</br>{% endif %}
+			{% if i.price|length > 1 %}{{i.price}}</br>{% endif %}
 		{% endfor %}
 
 		<!--  DESSERTS -->
 		<h2>Desserts</h2>
 		{% for i in desserts %}
-			{{i.name}}
-			</br>
-			{{i.description}}
-			</br>
-			{{i.price}}
-			</br>
-			</br>
+			{% if i.name|length > 1 %}<b>{{i.name}}</b></br>{% endif %}
+			{% if i.description|length > 1 %}{{i.description}}</br>{% endif %}
+			{% if i.price|length > 1 %}{{i.price}}</br>{% endif %}
 		{% endfor %}
 
 		<!--  BEVERAGES -->
 		<h2>Beverages</h2>
 		{% for i in beverages %}
-			{{i.name}}
-			</br>
-			{{i.description}}
-			</br>
-			{{i.price}}
-			</br>
-			</br>
+			{% if i.name|length > 1 %}<b>{{i.name}}</b></br>{% endif %}
+			{% if i.description|length > 1 %}{{i.description}}</br>{% endif %}
+			{% if i.price|length > 1 %}{{i.price}}</br>{% endif %}
 		{% endfor %}
 {% endblock %}
