@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 		<h1>{{ restaurant.name}}</h1>
-		<a href="{{ url_for('restaurants')}}">Return to Restaurant List</a>
-		<a href="{{ url_for('newMenuItem', restaurant_id = restaurant.id)}}">Add Item</a>
+		<a href="{{ url_for('restaurants')}}">
+			<button type="button" class="btn btn-primary-outline">
+				&lt;&lt; Return to Restaurant List
+			</button>
+		</a>
+		<a href="{{ url_for('newMenuItem', restaurant_id = restaurant.id)}}">
+			<button type="button" class="btn btn-primary-outline">
+				Add Item +
+			</button>
+		</a>
 		</br>
 		</br>
 
@@ -15,14 +23,12 @@
 		</br>
 		{{i.price}}
 		</br>
-		<a href="{{url_for('editMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Edit</a>
-		<a href="{{url_for('deleteMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Delete</a>
+		<a href="{{url_for('editMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-secondary btn-sm">Edit</button>
+		</a>
+		<a href="{{url_for('deleteMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-danger-outline btn-sm">Delete</button>
+		</a>
 		</br>
 		</br>
 		{% endfor %}
@@ -36,14 +42,12 @@
 		</br>
 		{{i.price}}
 		</br>
-		<a href="{{url_for('editMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Edit</a>
-		<a href="{{url_for('deleteMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Delete</a>
+		<a href="{{url_for('editMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-secondary btn-sm">Edit</button>
+		</a>
+		<a href="{{url_for('deleteMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-danger-outline btn-sm">Delete</button>
+		</a>
 		</br>
 		</br>
 		{% endfor %}
@@ -57,14 +61,12 @@
 		</br>
 		{{i.price}}
 		</br>
-		<a href="{{url_for('editMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Edit</a>
-		<a href="{{url_for('deleteMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Delete</a>
+		<a href="{{url_for('editMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-secondary btn-sm">Edit</button>
+		</a>
+		<a href="{{url_for('deleteMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-danger-outline btn-sm">Delete</button>
+		</a>
 		</br>
 		</br>
 		{% endfor %}
@@ -78,14 +80,12 @@
 		</br>
 		{{i.price}}
 		</br>
-		<a href="{{url_for('editMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Edit</a>
-		<a href="{{url_for('deleteMenuItem',
-		restaurant_id= restaurant.id,
-		menu_id= i.id
-		)}}">Delete</a>
+		<a href="{{url_for('editMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-secondary btn-sm">Edit</button>
+		</a>
+		<a href="{{url_for('deleteMenuItem', restaurant_id= restaurant.id, menu_id= i.id)}}">
+			<button type="button" class="btn btn-danger-outline btn-sm">Delete</button>
+		</a>
 		</br>
 		</br>
 		{% endfor %}

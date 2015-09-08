@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 		<h1>Restaurants</h1>
-    <a href="{{ url_for('newRestaurant') }}">New Restaurant</a>
+		<a href="{{ url_for('newRestaurant') }}">
+			<button type="button" class="btn btn-primary-outline">
+				New Restaurant +
+			</button>
+		</a>
     </br>
     </br>
 

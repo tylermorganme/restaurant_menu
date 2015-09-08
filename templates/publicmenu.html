@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 		<h1>{{ restaurant.name}}</h1>
-		<a href="{{ url_for('restaurants')}}">Return to Restaurant List</a>
+		<a href="{{ url_for('restaurants')}}">
+			<button type="button" class="btn btn-primary-outline">
+				&lt;&lt; Return to Restaurant List
+			</button>
+		</a>
 		</br>
 		</br>
 
