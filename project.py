@@ -199,7 +199,7 @@ def newMenuItem(restaurant_id):
                            user_id=restaurant.user_id)
         session.add(newItem)
         session.commit()
-        flash("new menu item create!")
+        flash("New menu item created!", "success")
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
     else:
         return render_template('newmenuitem.html', restaurant_id=restaurant_id)
@@ -244,7 +244,7 @@ def deleteMenuItem(restaurant_id, menu_id):
     if request.method == 'POST':
         session.delete(deleteItem)
         session.commit()
-        flash("Deleted " + deletedItemName)
+        flash("Deleted " + deletedItemName, "success")
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
     else:
         return render_template('deletemenuitem.html',
@@ -352,7 +352,7 @@ def gconnect():
     output += login_session['picture']
     output += (' " style="width: 300px; height: 300px; border-radius: 150px; '
                '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> ')
-    flash("you are now logged in as %s" % login_session['username'])
+    flash("You are now logged in as %s" % login_session['username'], "success")
     print "done!"
     return output
 
@@ -424,7 +424,7 @@ def fbconnect():
     output += (' " style = "width: 300px; height: 300px;border-radius: 150px; '
                '-webkit-border-radius: 150px;-moz-border-radius: 150px;"> ')
 
-    flash("Now logged in as %s" % login_session['username'])
+    flash("Now logged in as %s" % login_session['username'], "success")
     return output
 
 
@@ -439,7 +439,7 @@ def disconnect():
             facebook_id, access_token)
         h = httplib2.Http()
         result = h.request(url, 'DELETE')[1]
-        flash("You have been logged out")
+        flash("You have been logged out", "success")
         del login_session['facebook_id']
     else:
         # Only disconnect a connected user.
@@ -463,10 +463,10 @@ def disconnect():
             response = make_response(
                 json.dumps('Sucessfully disconencted.'), 200)
             response.headers['Content-Type'] = 'application/json'
-            flash("You have been logged out")
+            flash("You have been logged out", "danger")
         else:
             # For whatever reason, the given token was invalid.
-            flash('Failed to revoke token for given use.')
+            flash('Failed to revoke token for given use.', "danger")
             response = make_response(
                 json.dumps('Failed to revoke token for given use.', 400)
             )
