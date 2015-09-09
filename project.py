@@ -479,6 +479,13 @@ def disconnect():
 
 
 # API Endpoints
+@app.route('/restaurant/restaurant/menu/JSON')
+def restaurantsJSON():
+    """API endpoint for a list of restaurants"""
+    restaurants = session.query(Restaurant)
+    return jsonify(MenuItems=[i.serialize for i in restaurants])
+
+
 @app.route('/restaurant/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
     """API endpoint for a restaurant menu"""

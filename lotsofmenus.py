@@ -326,7 +326,7 @@ session.add(restaurant1)
 session.commit()
 
 menuItem9 = MenuItem(user_id=1, name="Chicken Fried Steak",
-                     description="Fresh battered sirloin steak fried and smothered with cream gravy"
+                     description="Fresh battered sirloin steak fried and smothered with cream gravy",
                      price="$8.99", course="Entree", restaurant=restaurant1)
 
 session.add(menuItem9)

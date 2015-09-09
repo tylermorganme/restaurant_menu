@@ -8,7 +8,7 @@ This app was built using Python 2.7.6. If you want to use a different version of
 
 1. Install all of the dependencies The easiest way to go about doing this is to install a vagrant virtual machine as described here: [https://www.udacity.com/wiki/ud197/install-vagrant](https://www.udacity.com/wiki/ud197/install-vagrant).
 
-2. Run database-setup.py to create the proper database schema.
+2. Run database_setup.py to create the proper database schema.
 
 3. **(OPTIONAL)** Run lotsofmenus.py to populate the database with dummy data.
 
