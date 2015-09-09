@@ -219,6 +219,9 @@ def editMenuItem(restaurant_id, menu_id):
                 'items. Please create your own restaurant in order to delete.')
     if request.method == 'POST':
         editedItem.name = request.form['name']
+        editedItem.course = request.form['course']
+        editedItem.description = request.form['description']
+        editedItem.price = request.form['price']
         session.add(editedItem)
         session.commit()
         flash("Changed name form " + previousName + " to " + editedItem.name)

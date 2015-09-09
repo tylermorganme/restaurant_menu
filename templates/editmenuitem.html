@@ -3,8 +3,21 @@
 		<h1>Edit Menu Item</h1>
 		<form action="{{ url_for('editMenuItem', restaurant_id=restaurant_id, menu_id=menu_id)}}" method='POST'>
 			<p>Name:</p>
-			<input type="text" size='30' name='name' placeholder="{{item.name}}">
+			<input type="text" size='30' name='name' value="{{item.name}}">
 			<input type="submit" value='edit'>
+			<br>
+			<p>Course:</p>
+			<input type="radio" value="Appetizer" name='course' {% if item.course == 'Appetizer' %}checked{% endif %}>Appetizer<br>
+			<input type="radio" value="Entree" name='course' {% if item.course == 'Entree' %}checked{% endif %}>Entree<br>
+			<input type="radio" value="Dessert" name='course' {% if item.course == 'Dessert' %}checked{% endif %}>Dessert<br>
+			<input type="radio" value="Beverage" name='course' {% if item.course == 'Beverage' %}checked{% endif %}>Beverage<br>
+			<br>
+			<textarea name='description'>{{item.description}}</textarea>
+			<br>
+			<p>Price:</p>
+			<input type="text" name='price' value="{{item.price}}"><br>
+			<br>
+			<input type="submit" value='Edit'>
 		</form>
 		<a href="{{ url_for('restaurantMenu', restaurant_id=restaurant_id)}}">Cancel</a>
 {% endblock %}
