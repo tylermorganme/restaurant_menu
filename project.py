@@ -88,7 +88,6 @@ def restaurants():
 
 
 @app.route('/restaurant/<int:restaurant_id>/')
-#  TODO: Breakout by course
 def restaurantMenu(restaurant_id):
     """Render a view of the menu of a single restaurant"""
     restaurant = session.query(Restaurant).filter_by(
@@ -207,7 +206,6 @@ def newMenuItem(restaurant_id):
 
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/',
            methods=['GET', 'POST'])
-#  TODO: Add edit inputs for the other fields in MenuItem
 def editMenuItem(restaurant_id, menu_id):
     """Render a view of for editing an existing menu item"""
     if 'username' not in login_session:
