@@ -59,3 +59,18 @@ HJ2Ynod+DvNSNSjNtUfBK0Iy8GgQmTRjl/Q4wzBfXn6HA1zMztn5d5M+Vd2Kz67s
   - Allow Outgoing by Default
   - Allow incoming traffic on 2200, 80, and 123
 - Changed timezone to UTC using sudo dpkg-reconfigure tzdata
+- Installed apache2
+- Install libapache2-mod-wsgi
+- Modifed /etc/apache2/sites-enabled/000-default.conf
+- Installed python-pip
+- Installed git
+- Cloned my project repo to /var/www/restaurant_menu
+- Used pip to install flask
+- Used pip to install oauth2client
+- Used pip to install sqlalchemy
+- Installed postgreSQL
+  - TODO: Disabled remote connections
+  - TODO: Created a new user named catalog that has limited permission to the catalog application database.
+- TODO: Install Git
+  - TODO: Clone my app repo
+  - TODO: Make sure that the .git directory is not accessible via the browser

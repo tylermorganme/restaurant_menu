@@ -1,5 +1,7 @@
 import random
 import string
+import sys
+import logging
 from flask import (Flask, render_template, request,
                    redirect, url_for, flash, jsonify, make_response)
 from flask import session as login_session
@@ -21,7 +23,7 @@ CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Menu Application"
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+engine = create_engine('postgresql://app:password@localhost/restaurant_menu')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
