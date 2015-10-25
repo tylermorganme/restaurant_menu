@@ -64,10 +64,12 @@ HJ2Ynod+DvNSNSjNtUfBK0Iy8GgQmTRjl/Q4wzBfXn6HA1zMztn5d5M+Vd2Kz67s
 - Modifed /etc/apache2/sites-enabled/000-default.conf
 - Installed python-pip
 - Installed git
+- Installed postgresql-server-dev-9.3
 - Cloned my project repo to /var/www/restaurant_menu
 - Used pip to install flask
 - Used pip to install oauth2client
 - Used pip to install sqlalchemy
+- Used pip in install psycopg2
 - Installed postgreSQL
   - TODO: Disabled remote connections
   - TODO: Created a new user named catalog that has limited permission to the catalog application database.

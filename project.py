@@ -17,7 +17,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database_setup import Restaurant, Base, MenuItem, User
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
