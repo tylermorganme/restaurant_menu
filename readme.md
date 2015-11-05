@@ -58,6 +58,7 @@ HJ2Ynod+DvNSNSjNtUfBK0Iy8GgQmTRjl/Q4wzBfXn6HA1zMztn5d5M+Vd2Kz67s
 - Used pip to install sqlalchemy
 - Used pip in install psycopg2
 - Installed postgreSQL
+- Changed PermitRootLogin in /etc/ssh/sshd_config to no
 
   ## Installation
   This app was built using Python 2.7.6. If you want to use a different version of Python do so at your own risk.
