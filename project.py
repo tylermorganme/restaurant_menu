@@ -20,7 +20,7 @@ from database_setup import Restaurant, Base, MenuItem, User
 app = Flask(__name__, static_folder='static', static_url_path='')
 
 CLIENT_ID = json.loads(
-    open('/var/www/restaurant_menu/client_secrets.json', 'r').read())['web']['client_id']
+    open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Restaurant Menu Application"
 
 engine = create_engine('postgresql://app:password@localhost/restaurant_menu')
@@ -282,7 +282,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('/var/www/restaurant_menu/client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:

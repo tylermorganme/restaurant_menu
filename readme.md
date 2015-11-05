@@ -1,20 +1,7 @@
 #Restaurant Menu App
 
 ## Introduction
-This is an app to display restaurant menus. It was created as Project 3 for Udacity's Fullstack Nanodegree.
-
-## Installation
-This app was built using Python 2.7.6. If you want to use a different version of Python do so at your own risk.
-
-1. Install all of the dependencies The easiest way to go about doing this is to install a vagrant virtual machine as described here: [https://www.udacity.com/wiki/ud197/install-vagrant](https://www.udacity.com/wiki/ud197/install-vagrant).
-
-2. Run database_setup.py to create the proper database schema.
-
-3. **(OPTIONAL)** Run lotsofmenus.py to populate the database with dummy data.
-
-4. **(OPTIONAL)** If you want to use your own Google & Facebook account make sure to change the information client_secrets.json and fb_client_secrets.json. You should also change the data-clientid and appId in login.html. You should be able to find them with a text search.
-
-5. Run project.py, which will start the Flask app and run a local server on port 5000. To access the app open a browser and navigate to localhost:5000
+This is an app to display restaurant menus. It was created as Project 3 & Project 5 for Udacity's Fullstack Nanodegree.
 
 ##Project 5 Notes
 ### Important info
@@ -71,8 +58,16 @@ HJ2Ynod+DvNSNSjNtUfBK0Iy8GgQmTRjl/Q4wzBfXn6HA1zMztn5d5M+Vd2Kz67s
 - Used pip to install sqlalchemy
 - Used pip in install psycopg2
 - Installed postgreSQL
-  - TODO: Disabled remote connections
-  - TODO: Created a new user named catalog that has limited permission to the catalog application database.
-- TODO: Install Git
-  - TODO: Clone my app repo
-  - TODO: Make sure that the .git directory is not accessible via the browser
+
+  ## Installation
+  This app was built using Python 2.7.6. If you want to use a different version of Python do so at your own risk.
+
+  1. Install all of the dependencies The easiest way to go about doing this is to install a vagrant virtual machine as described here: [https://www.udacity.com/wiki/ud197/install-vagrant](https://www.udacity.com/wiki/ud197/install-vagrant).
+
+  2. Run database_setup.py to create the proper database schema.
+
+  3. **(OPTIONAL)** Run lotsofmenus.py to populate the database with dummy data.
+
+  4. **(OPTIONAL)** If you want to use your own Google & Facebook account make sure to change the information client_secrets.json and fb_client_secrets.json. You should also change the data-clientid and appId in login.html. You should be able to find them with a text search.
+
+  5. Run project.py, which will start the Flask app and run a local server on port 5000. To access the app open a browser and navigate to localhost:5000
